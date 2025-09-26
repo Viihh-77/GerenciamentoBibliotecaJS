@@ -7,14 +7,15 @@ const rl = readline.createInterface({
 });
 
 function mostrarMenu() {
-    console.log('\n=== Biblioteca ===');
-    console.log('| 1 - Adicionar     |');
-    console.log('| 2 - Listar        |');
-    console.log('| 3 - Buscar        |');
-    console.log('| 4 - Editar        |');
-    console.log('| 5 - Remover       |');
-    console.log('| 0 - Sair          |');
-    console.log('===================');
+    console.log('\n========= Biblioteca =========');
+    console.log('| 1 - Adicionar                |');
+    console.log('| 2 - Listar                   |');
+    console.log('| 3 - Buscar                   |');
+    console.log('| 4 - Editar                   |');
+    console.log('| 5 - Alterar Disponibilidade  |');
+    console.log('| 6 - Remover                  |');
+    console.log('| 0 - Sair                     |');
+    console.log('================================');
 
 rl.question('Escolha uma opção: ', (opcao) => {
     switch (opcao) {
@@ -24,7 +25,6 @@ rl.question('Escolha uma opção: ', (opcao) => {
                     rl.question('Ano: ', (ano) => {
                         rl.question('Gênero: ', (genero) => {
                             biblioteca.adicionarLivro(titulo, autor, ano, genero);
-                            console.log('Livro adicionado com sucesso!');
                             mostrarMenu();
                         });
                     });
@@ -68,6 +68,17 @@ rl.question('Escolha uma opção: ', (opcao) => {
             break;
 
         case '5':
+            rl.question('ID do livro a alterar disponibilidade: ', (id) => {
+                rl.question('Disponível (s/n): ', (disponivel) => {
+                    const isDisponivel = disponivel.toLowerCase() === 's';
+                    biblioteca.alterarDisponibilidade(parseInt(id), isDisponivel);
+                    mostrarMenu();
+                });
+            });
+
+            break;
+
+        case '6':
             rl.question('ID do livro a remover: ', (id) => {
                 biblioteca.removerLivro(parseInt(id));
                 mostrarMenu();

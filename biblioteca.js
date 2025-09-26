@@ -68,10 +68,20 @@ function removerLivro(id) {
     console.log(`Livro "${removido[0].titulo}" removido com sucesso!`);
 }
 
+function alterarDisponibilidade(id, disponivel) {
+    const livro = livros.find(l => l.id === id);
+    if (!livro) {
+        console.log('Erro: Livro não encontrado.');
+        return;
+    }
+    livro.disponivel = disponivel;
+}
+
 module.exports = {
     adicionarLivro,
     listarLivros,
     buscarLivro,
     editarLivro,
-    removerLivro
+    removerLivro,
+    alterarDisponibilidade
 };
