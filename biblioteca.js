@@ -77,11 +77,87 @@ function alterarDisponibilidade(id, disponivel) {
     livro.disponivel = disponivel;
 }
 
+function filtrarLivrosPorGenero(genero) {
+    return livros.filter(livro => livro.genero.toLowerCase() === genero.toLowerCase());
+}
+
+function ordenarLivrosPorAnoPublicacao(ordem) {
+    return livros.slice().sort((a, b) => {
+        if (ordem === 'crescente') {
+            return a.ano - b.ano;
+        } else if (ordem === 'decrescente') {
+            return b.ano - a.ano;
+        } else {
+            return 0;
+        }
+    });
+}
+
+function listarLivrosDisponiveis() {
+    const livrosDisponiveis = livros.filter(livro => livro.disponivel === true);
+
+    if (livrosDisponiveis.length === 0) {
+        console.log('Nenhum livro disponível no momento.');
+    } else {
+        console.log('Livros disponíveis:');
+        livrosDisponiveis.forEach(livro => {
+            console.log(`ID: ${livro.id}, Título: ${livro.titulo}, Autor: ${livro.autor}, Ano: ${livro.ano}, Gênero: ${livro.genero}`);
+        });
+    }
+
+    return livrosDisponiveis;
+
+}
+
+function registrarEmprestimo(id, nomeUsuario, dataEmprestimo, dataDevolucao) {
+    const livro = livros.find(l => l.id === id);
+    if (!livro) {
+        console.log('Erro: Livro não encontrado.');
+        return;
+    } else {
+        if (!livro.disponivel) {
+            console.log('Erro: Livro não está disponível para empréstimo.');
+            return;
+        }
+
+        livro.emprestimos.push({
+            nomeUsuario,
+            dataEmprestimo,
+            dataDevolucao
+        });
+
+        livro.disponivel = false;
+        console.log('Empréstimo registrado com sucesso!');
+    }
+}
+
+function gerarRelatorioEmprestimos() {
+    let totalEmprestimos = 0;
+
+    livros.forEach(livro => {
+        livro.emprestimos.forEach(emprestimo => {
+            console.log(`Livro: ${livro.titulo}, Usuário: ${emprestimo.nomeUsuario}, Data de Empréstimo: ${emprestimo.dataEmprestimo}, Data de Devolução: ${emprestimo.dataDevolucao}`);
+            totalEmprestimos++;
+        });
+    });
+
+    if (totalEmprestimos === 0) {
+        console.log('Nenhum empréstimo registrado.');
+    } else {
+        console.log(`Total de empréstimos registrados: ${totalEmprestimos}`);
+    }
+}
+
 module.exports = {
     adicionarLivro,
     listarLivros,
     buscarLivro,
     editarLivro,
     removerLivro,
-    alterarDisponibilidade
+    alterarDisponibilidade,
+    filtrarLivrosPorGenero,
+    ordenarLivrosPorAnoPublicacao,
+    listarLivrosDisponiveis,
+    registrarEmprestimo,
+    gerarRelatorioEmprestimos
 };
